@@ -163,6 +163,21 @@
       box-shadow: 0 4px 0 #e3dceb;
       font-size: 1.05rem;
     }
+    .stats {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .stat {
+      background: white;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: 600;
+      box-shadow: 0 4px 0 #e3dceb;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
     .icon-btn {
       background: white;
       border: none;
@@ -311,7 +326,11 @@
   <section id="game" class="screen hidden">
     <div class="hud">
       <button class="btn secondary" id="backToMenu">← Menu</button>
-      <div class="streak" id="streak">🔥 Streak: 0</div>
+      <div class="stats">
+        <div class="streak" id="streak">🔥 Streak: 0</div>
+        <div class="stat" id="wrongCount" title="Total wrong guesses">❌ 0</div>
+        <div class="stat" id="firstTryPct" title="Percent of problems solved on first try">🎯 —</div>
+      </div>
       <button class="icon-btn" id="muteBtn" title="Mute / Unmute">🔊</button>
     </div>
 
@@ -412,6 +431,10 @@
     let mode = 'wordToEmoji';// or 'emojiToWord'
     let current = null;      // {answer:{w,e}, choices:[...]}
     let streak = 0;
+    let wrongGuesses = 0;    // total wrong guesses this session
+    let problemsCompleted = 0; // total problems solved
+    let firstTrySuccesses = 0; // problems solved without any wrong guess
+    let firstTry = true;     // whether current problem still has a clean record
     let muted = false;
     let busy = false;        // disables clicks during animations
 
@@ -508,7 +531,12 @@
         flashToast('Need more words!', 'bad'); return;
       }
       streak = 0;
+      wrongGuesses = 0;
+      problemsCompleted = 0;
+      firstTrySuccesses = 0;
+      firstTry = true;
       updateStreak();
+      updateStats();
       mode = 'wordToEmoji';
       ensureAudio();
       show('game');
@@ -532,6 +560,7 @@
       const distractors = pickN(pool, 2, answer);
       const choices = shuffle([answer, ...distractors]);
       current = { answer, choices };
+      firstTry = true;
       render();
     }
 
@@ -585,7 +614,10 @@
         btn.classList.add('correct');
         sndCorrect();
         streak += 1;
+        problemsCompleted += 1;
+        if (firstTry) firstTrySuccesses += 1;
         updateStreak();
+        updateStats();
         flashToast(pickPraise(), 'good');
         if (streak > 0 && streak % 5 === 0) { sndCheer(); confettiBurst(); }
         setTimeout(()=>{
@@ -597,16 +629,27 @@
         btn.classList.add('wrong');
         btn.disabled = true;
         sndWrong();
+        wrongGuesses += 1;
+        firstTry = false;
         if (streak !== 0) {
           streak = 0;
           updateStreak();
         }
+        updateStats();
         flashToast(pickEncourage(), 'bad');
       }
     }
 
     function updateStreak() {
       $('#streak').textContent = `🔥 Streak: ${streak}`;
+    }
+
+    function updateStats() {
+      $('#wrongCount').textContent = `❌ ${wrongGuesses}`;
+      const pct = problemsCompleted === 0
+        ? '—'
+        : Math.round((firstTrySuccesses / problemsCompleted) * 100) + '%';
+      $('#firstTryPct').textContent = `🎯 ${pct}`;
     }
 
     /* =========================================================
