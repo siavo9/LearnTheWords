@@ -297,6 +297,208 @@
       100% { transform: translateY(110vh) rotate(720deg); opacity: 0.6; }
     }
 
+    /* ===== Persistent top nav ===== */
+    .topnav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 14px rgba(80,60,120,0.08);
+      font-family: inherit;
+    }
+    .topnav .nav-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .topnav a, .topnav button.nav-link {
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--ink);
+      background: white;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 14px;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #e3dceb;
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .topnav a:hover, .topnav button.nav-link:hover { transform: translateY(-1px); }
+    .topnav a:active, .topnav button.nav-link:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #e3dceb;
+    }
+    .topnav .htp-btn {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 3px 0 var(--accent-dark);
+    }
+    .topnav .htp-btn:active { box-shadow: 0 1px 0 var(--accent-dark); }
+
+    /* Push content below the fixed nav */
+    .screen { padding-top: 76px; }
+
+    @media (max-width: 480px) {
+      .topnav { padding: 8px 10px; }
+      .topnav a, .topnav button.nav-link {
+        font-size: 0.85rem;
+        padding: 7px 11px;
+      }
+      .screen { padding-top: 84px; }
+    }
+
+    /* ===== How to Play modal ===== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(74, 68, 86, 0.55);
+      backdrop-filter: blur(3px);
+      z-index: 60;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-backdrop.show { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 28px;
+      padding: 24px 24px 22px;
+      max-width: 480px;
+      width: 100%;
+      max-height: 86vh;
+      overflow-y: auto;
+      box-shadow: 0 18px 50px rgba(80,60,120,0.3);
+      position: relative;
+      text-align: left;
+    }
+    .modal h2 {
+      margin: 0 0 10px;
+      color: #6d597a;
+      font-size: 1.6rem;
+      text-align: center;
+    }
+    .modal p { line-height: 1.5; margin: 0 0 10px; color: #5b5468; }
+    .modal ul {
+      padding-left: 22px;
+      margin: 8px 0 14px;
+      line-height: 1.6;
+      color: #5b5468;
+    }
+    .modal li { margin-bottom: 4px; }
+    .modal .modal-close {
+      position: absolute;
+      top: 10px; right: 12px;
+      background: #ede7f6;
+      border: none;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-family: inherit;
+      color: var(--ink);
+    }
+    .modal .modal-close:hover { background: #ddd0f0; }
+    .modal .btn {
+      display: block;
+      margin: 6px auto 0;
+      font-size: 1.1rem;
+      padding: 12px 30px;
+    }
+
+    /* Inline How to Play card on screens (kept short) */
+    .htp-card {
+      background: rgba(255,255,255,0.7);
+      border-radius: 22px;
+      padding: 16px 18px;
+      max-width: 540px;
+      width: 100%;
+      margin: 0 auto 18px;
+      text-align: left;
+      box-shadow: 0 6px 18px rgba(80,60,120,0.08);
+    }
+    .htp-card h3 {
+      margin: 0 0 6px;
+      font-size: 1.1rem;
+      color: #6d597a;
+      text-align: center;
+    }
+    .htp-card p { margin: 0 0 6px; line-height: 1.45; font-size: 0.95rem; color: #5b5468; }
+    .htp-card ul { margin: 4px 0 0; padding-left: 20px; font-size: 0.92rem; color: #5b5468; line-height: 1.5; }
+    .htp-card li { margin-bottom: 2px; }
+
+    /* ===== Extra positive feedback ===== */
+    .big-praise {
+      position: fixed;
+      top: 38%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.4) rotate(-6deg);
+      font-size: clamp(2.6rem, 9vw, 4.4rem);
+      font-weight: 700;
+      color: #6d597a;
+      text-shadow:
+        0 0 0 #fff,
+        3px 3px 0 #fff,
+        -3px 3px 0 #fff,
+        3px -3px 0 #fff,
+        -3px -3px 0 #fff,
+        0 8px 26px rgba(149,117,205,0.5);
+      pointer-events: none;
+      opacity: 0;
+      z-index: 70;
+      letter-spacing: 1px;
+    }
+    .big-praise.show {
+      animation: praisePop 1.1s cubic-bezier(.34,1.56,.64,1) forwards;
+    }
+    @keyframes praisePop {
+      0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3) rotate(-12deg); }
+      30%  { opacity: 1; transform: translate(-50%, -50%) scale(1.15) rotate(4deg); }
+      60%  { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-2deg); }
+      100% { opacity: 0; transform: translate(-50%, -55%) scale(0.95) rotate(0deg); }
+    }
+
+    /* Sparkle burst from the tapped choice */
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.6rem;
+      z-index: 55;
+      animation: sparkleFly 1s ease-out forwards;
+    }
+    @keyframes sparkleFly {
+      0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.6); }
+      100% { opacity: 0; transform:
+              translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+              scale(1.4) rotate(var(--rot)); }
+    }
+
+    /* Firework bursts */
+    .firework {
+      position: fixed;
+      pointer-events: none;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      z-index: 45;
+      animation: fwBurst 1s ease-out forwards;
+    }
+    @keyframes fwBurst {
+      0%   { opacity: 1; transform: translate(-50%,-50%) translate(0,0) scale(1); }
+      100% { opacity: 0; transform: translate(-50%,-50%) translate(var(--fx), var(--fy)) scale(0.4); }
+    }
+
     @media (max-width: 480px) {
       .choices { gap: 10px; }
       .choice { padding: 16px 4px; min-height: 90px; }
@@ -306,6 +508,15 @@
   </style>
 </head>
 <body>
+  <!-- ====== PERSISTENT TOP NAV ====== -->
+  <nav class="topnav" aria-label="Main navigation">
+    <div class="nav-links">
+      <button type="button" class="nav-link" id="navHome" aria-label="Go to Learn the Words home">🏠 Home</button>
+      <a href="https://zaksbraingames.com" aria-label="Go to Zak's Brain Games">🧠 Zak's Brain Games</a>
+    </div>
+    <button type="button" class="nav-link htp-btn" id="navHowToPlay" aria-label="How to Play">❓ How to Play</button>
+  </nav>
+
   <!-- floating decor (hidden during gameplay) -->
   <div class="decor d1">🌸</div>
   <div class="decor d2">🌟</div>
@@ -320,6 +531,18 @@
     <p class="tagline">A friendly little reading game.<br>Match words to pictures — and pictures to words!</p>
     <div style="font-size:3.2rem; margin: 8px 0 24px;">📚✨🐶🍎🌙</div>
     <button class="btn" id="goToPicker">Play Now</button>
+
+    <div class="htp-card" style="margin-top: 22px;">
+      <h3>📖 How to Play</h3>
+      <p>Read the word and tap the picture that matches — or look at the picture and tap the word! Keep your streak going by getting answers right in a row.</p>
+      <ul>
+        <li>👆 Tap the choice that matches the clue</li>
+        <li>🔥 Build up your streak for fireworks</li>
+        <li>🎯 Try to be right on your very first try</li>
+        <li>🔊 Use the speaker button to turn sounds on or off</li>
+      </ul>
+    </div>
+
     <p class="more-games">Try more fun brain games at <a href="https://zaksbraingames.com/">zaksbraingames.com</a> 🧠</p>
   </section>
 
@@ -333,6 +556,16 @@
       <div style="margin-top:14px;">
         <button class="btn secondary" id="backToWelcome">← Back</button>
       </div>
+    </div>
+
+    <div class="htp-card" style="margin-top: 22px;">
+      <h3>📖 How to Play</h3>
+      <p>Pick the kinds of words you want to practice, then press Start. You'll see a word or a picture and three choices — tap the one that matches!</p>
+      <ul>
+        <li>✅ Check one or more word groups</li>
+        <li>▶️ Press Start to begin</li>
+        <li>🏆 Get answers right to grow your streak</li>
+      </ul>
     </div>
   </section>
 
@@ -353,7 +586,26 @@
     <div class="choices" id="choices"></div>
   </section>
 
+  <!-- ====== HOW TO PLAY MODAL (always available) ====== -->
+  <div class="modal-backdrop" id="htpModal" role="dialog" aria-modal="true" aria-labelledby="htpTitle">
+    <div class="modal">
+      <button class="modal-close" id="htpClose" aria-label="Close">✕</button>
+      <h2 id="htpTitle">📖 How to Play</h2>
+      <p>Learn the Words is a friendly little reading game! You'll see a word and pictures — tap the picture that matches the word. Then you'll see a picture and words — tap the word that matches the picture. Try to get a big streak!</p>
+      <ul>
+        <li>👆 <strong>Tap</strong> the choice that matches the clue</li>
+        <li>🔥 <strong>Streak</strong> grows every time you're right</li>
+        <li>🎉 Every right answer gets fireworks and cheers</li>
+        <li>🎯 Try to get the answer on your very first try</li>
+        <li>🔊 Use the speaker icon in the game to mute or unmute</li>
+        <li>🏠 Tap <strong>Home</strong> any time to go back to the start</li>
+      </ul>
+      <button class="btn" id="htpDone">Got it!</button>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
+  <div class="big-praise" id="bigPraise"></div>
 
   <script>
     /* =========================================================
@@ -500,6 +752,21 @@
     });
     $('#startGame').addEventListener('click', startGame);
 
+    // Persistent top nav
+    $('#navHome').addEventListener('click', ()=> show('welcome'));
+    const htpModal = $('#htpModal');
+    function openHowToPlay() { htpModal.classList.add('show'); }
+    function closeHowToPlay() { htpModal.classList.remove('show'); }
+    $('#navHowToPlay').addEventListener('click', openHowToPlay);
+    $('#htpClose').addEventListener('click', closeHowToPlay);
+    $('#htpDone').addEventListener('click', closeHowToPlay);
+    htpModal.addEventListener('click', e => {
+      if (e.target === htpModal) closeHowToPlay();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && htpModal.classList.contains('show')) closeHowToPlay();
+    });
+
     function buildPicker() {
       const list = $('#categoryList');
       list.innerHTML = '';
@@ -632,12 +899,23 @@
         if (firstTry) firstTrySuccesses += 1;
         updateStreak();
         updateStats();
-        flashToast(pickPraise(), 'good');
-        if (streak > 0 && streak % 5 === 0) { sndCheer(); confettiBurst(); }
+        const praise = pickPraise();
+        flashToast(praise, 'good');
+        bigPraise(praise);
+        speakPraise(praise);
+        sparkleFrom(btn);
+        fireworksBurst(2);
+        confettiBurst(20);
+        // Bigger celebration on streak milestones
+        if (streak > 0 && streak % 5 === 0) {
+          sndCheer();
+          confettiBurst(60);
+          fireworksBurst(6);
+        }
         setTimeout(()=>{
           mode = (mode === 'wordToEmoji') ? 'emojiToWord' : 'wordToEmoji';
           nextRound();
-        }, 900);
+        }, 1100);
       } else {
         // WRONG — shake, dim, allow more tries, keep same puzzle
         btn.classList.add('wrong');
@@ -669,7 +947,11 @@
     /* =========================================================
        TOAST + CONFETTI
        ========================================================= */
-    const PRAISE = ['Great job!','You did it!','Amazing!','Yes! ⭐','Way to go!','Brilliant!','Super!','Nice reading!'];
+    const PRAISE = [
+      'Great job!','You did it!','Amazing!','Yes!','Way to go!',
+      'Brilliant!','Super!','Nice reading!','Awesome!','Fantastic!',
+      'Wow!','Super star!','You rock!','Yay!','High five!'
+    ];
     const ENCOURAGE = ['Try again!','Almost!','You can do it!','Keep going!','Have another look!'];
     const pickPraise   = ()=> PRAISE[Math.floor(Math.random()*PRAISE.length)];
     const pickEncourage= ()=> ENCOURAGE[Math.floor(Math.random()*ENCOURAGE.length)];
@@ -684,8 +966,9 @@
     }
 
     const CONFETTI_COLORS = ['#f8b6c0','#a5d8f3','#c4e3a8','#fde6a8','#cbb6e8','#f6c2da'];
-    function confettiBurst() {
-      for (let i=0; i<60; i++) {
+    function confettiBurst(count) {
+      const n = count || 60;
+      for (let i=0; i<n; i++) {
         const c = document.createElement('div');
         c.className = 'confetti';
         c.style.left = Math.random()*100 + 'vw';
@@ -694,6 +977,81 @@
         c.style.transform = `rotate(${Math.random()*360}deg)`;
         document.body.appendChild(c);
         setTimeout(()=> c.remove(), 2600);
+      }
+    }
+
+    // Big animated praise text in the middle of the screen
+    function bigPraise(text) {
+      const el = $('#bigPraise');
+      el.textContent = text;
+      el.classList.remove('show');
+      // restart animation
+      void el.offsetWidth;
+      el.classList.add('show');
+    }
+
+    // Speak praise out loud (kid-friendly voice)
+    function speakPraise(text) {
+      if (muted) return;
+      if (!('speechSynthesis' in window)) return;
+      try {
+        const u = new SpeechSynthesisUtterance(text.replace(/[^\w !?'.,-]/g, ''));
+        u.rate = 1.05;
+        u.pitch = 1.4;
+        u.volume = 0.9;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(u);
+      } catch (e) { /* ignore */ }
+    }
+
+    // Sparkle emoji burst from the tapped choice
+    const SPARKLES = ['✨','⭐','🌟','💫','🎉','💖'];
+    function sparkleFrom(btn) {
+      const rect = btn.getBoundingClientRect();
+      const cx = rect.left + rect.width/2;
+      const cy = rect.top + rect.height/2;
+      for (let i=0; i<10; i++) {
+        const s = document.createElement('div');
+        s.className = 'sparkle';
+        s.textContent = SPARKLES[i % SPARKLES.length];
+        const angle = (Math.PI*2) * (i/10) + Math.random()*0.4;
+        const dist  = 80 + Math.random()*70;
+        s.style.left = cx + 'px';
+        s.style.top  = cy + 'px';
+        s.style.setProperty('--dx', Math.cos(angle)*dist + 'px');
+        s.style.setProperty('--dy', Math.sin(angle)*dist + 'px');
+        s.style.setProperty('--rot', (Math.random()*720 - 360) + 'deg');
+        document.body.appendChild(s);
+        setTimeout(()=> s.remove(), 1100);
+      }
+    }
+
+    // Fireworks: pick random points on screen, burst colored dots outward
+    const FW_COLORS = ['#ff6b9d','#ffd166','#06d6a0','#4cc9f0','#c77dff','#ff8fab','#fdffb6'];
+    function fireworksBurst(count) {
+      const n = count || 3;
+      for (let f=0; f<n; f++) {
+        setTimeout(()=> {
+          const cx = 12 + Math.random()*76; // vw, keep away from edges
+          const cy = 18 + Math.random()*55; // vh, keep upper area visible
+          const color = FW_COLORS[Math.floor(Math.random()*FW_COLORS.length)];
+          const particles = 18;
+          for (let i=0; i<particles; i++) {
+            const p = document.createElement('div');
+            p.className = 'firework';
+            p.style.left = cx + 'vw';
+            p.style.top  = cy + 'vh';
+            p.style.background = color;
+            p.style.boxShadow = '0 0 8px ' + color;
+            const angle = (Math.PI*2) * (i/particles);
+            const dist  = 70 + Math.random()*60;
+            p.style.setProperty('--fx', Math.cos(angle)*dist + 'px');
+            p.style.setProperty('--fy', Math.sin(angle)*dist + 'px');
+            p.style.animationDuration = (0.8 + Math.random()*0.5) + 's';
+            document.body.appendChild(p);
+            setTimeout(()=> p.remove(), 1500);
+          }
+        }, f * 120);
       }
     }
 
