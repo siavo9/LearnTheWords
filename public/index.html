@@ -575,6 +575,7 @@
       <button class="btn secondary" id="backToMenu">← Menu</button>
       <div class="stats">
         <div class="streak" id="streak">🔥 Streak: 0</div>
+        <div class="stat" id="firstTryCount" title="Answers correct on the first try">⭐ First try: 0</div>
         <div class="stat" id="wrongCount" title="Total wrong guesses">❌ 0</div>
         <div class="stat" id="firstTryPct" title="Percent of problems solved on first try">🎯 —</div>
       </div>
@@ -937,6 +938,7 @@
     }
 
     function updateStats() {
+      $('#firstTryCount').textContent = `⭐ First try: ${firstTrySuccesses}`;
       $('#wrongCount').textContent = `❌ ${wrongGuesses}`;
       const pct = problemsCompleted === 0
         ? '—'
